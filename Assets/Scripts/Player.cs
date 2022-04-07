@@ -65,11 +65,11 @@ public class Player : MonoBehaviour
         anim.SetFloat("SpeedY", currentVelocity.y);
         anim.SetBool("onGround", onGround);
 
-        if (currentVelocity.x > 0)
+        if ((currentVelocity.x > 0) && (transform.right.x < 0))
         {
             transform.rotation = Quaternion.Euler(0, 0, 0);
         }
-        else if (currentVelocity.x < 0)
+        else if ((currentVelocity.x < 0) && (transform.right.x > 0))
         {
             transform.rotation = Quaternion.Euler(0, 180, 0);
         }
