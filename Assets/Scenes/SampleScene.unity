@@ -640,6 +640,12 @@ MonoBehaviour:
     m_Bits: 64
   maxJumpTime: 0.2
   fallGravityScale: 5
+  maxHealth: 1
+  invulnerabilityTime: 2
+  blinkTime: 0.05
+  knockbackIntensity: 150
+  knockbackDuration: 0.5
+  deadTime: 3
 --- !u!212 &176610165
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5911,6 +5917,10 @@ PrefabInstance:
     - target: {fileID: 7552530452298283922, guid: 9bdb3d0ec06cfc741889aa10a0da14c3, type: 3}
       propertyPath: m_Name
       value: PatrolAnt
+      objectReference: {fileID: 0}
+    - target: {fileID: 7552530452298283924, guid: 9bdb3d0ec06cfc741889aa10a0da14c3, type: 3}
+      propertyPath: maxHealth
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7552530452298283927, guid: 9bdb3d0ec06cfc741889aa10a0da14c3, type: 3}
       propertyPath: m_RootOrder

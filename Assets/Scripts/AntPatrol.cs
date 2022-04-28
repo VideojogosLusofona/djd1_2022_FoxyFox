@@ -10,13 +10,17 @@ public class AntPatrol : MonoBehaviour
     [SerializeField] private float      probeRadius = 5;
     [SerializeField] private LayerMask  probeMask;
     [SerializeField] private float      deathAngle = 20;
+    [SerializeField] private int        damage = 1;
+    [SerializeField] private int        maxHealth = 1;
 
     private Rigidbody2D rb;
     private float       dirX = 1;
+    private int         health;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();    
+        rb = GetComponent<Rigidbody2D>();
+        health = maxHealth;
     }
 
     void Update()
@@ -64,7 +68,7 @@ public class AntPatrol : MonoBehaviour
         return currentVelocity;
     }
 
-    private void OnTriggerEnter2D(Collider2D collider)
+    private void OnTriggerStay2D(Collider2D collider)
     {
         var player = collider.GetComponent<Player>();
         if (player != null)
@@ -75,15 +79,34 @@ public class AntPatrol : MonoBehaviour
                 float       dp = Vector3.Dot(Vector3.down, playerRB.velocity.normalized);
                 float       angle = Mathf.Acos(dp) * Mathf.Rad2Deg;
 
-                Debug.Log("Angle = " + angle);
-
                 if (angle < deathAngle)
                 {
-                    Destroy(gameObject);
+                    DealDamage(1);
+
+                    Vector2 currentPlayerVelocity = playerRB.velocity;
+                    currentPlayerVelocity.y = player.GetJumpSpeed();
+                    playerRB.velocity = currentPlayerVelocity;
+
                     return;
                 }
             }
-            Destroy(player.gameObject);
+            player.DealDamage(damage, transform);
+        }
+    }
+
+    public void DealDamage(int damage)
+    {
+        health = health - damage;
+
+        Debug.Log($"Ouch Enemy, health={health}");
+
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+
         }
     }
 
