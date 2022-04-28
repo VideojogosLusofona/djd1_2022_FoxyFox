@@ -10,14 +10,18 @@ public class PatrolAnt : MonoBehaviour
     [SerializeField] private float      probeRadius = 5.0f;
     [SerializeField] private LayerMask  probeMask;
     [SerializeField] private float      deathAngle = 20.0f;
+    [SerializeField] private int        damage = 1;
+    [SerializeField] private int        maxHealth = 1;
 
     private float dirX = 1;
+    private int   health;
 
     private Rigidbody2D rb;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        health = maxHealth;
     }
 
     void Update()
@@ -64,7 +68,7 @@ public class PatrolAnt : MonoBehaviour
         return currentVelocity;
     }
 
-    void OnTriggerEnter2D(Collider2D collider)
+    void OnTriggerStay2D(Collider2D collider)
     {
         Player player = collider.GetComponentInParent<Player>();
 
@@ -77,12 +81,25 @@ public class PatrolAnt : MonoBehaviour
 
                 if (dp > Mathf.Cos(deathAngle * Mathf.Deg2Rad))
                 {
-                    Destroy(gameObject);
+                    Vector2 currentPlayerVelocity = rbPlayer.velocity;
+                    currentPlayerVelocity.y = 200;
+                    rbPlayer.velocity = currentPlayerVelocity;
+                    DealDamage(1);
                     return;
                 }
             }
 
-            Destroy(player.gameObject);
+            player.DealDamage(damage, transform);
+        }
+    }
+
+    public void DealDamage(int damage)
+    {
+        health = health - damage;
+
+        if (health <= 0)
+        {
+            Destroy(gameObject);
         }
     }
 

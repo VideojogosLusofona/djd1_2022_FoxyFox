@@ -171,6 +171,12 @@ MonoBehaviour:
   fallGravityScale: 5
   groundCollider: {fileID: 176610168}
   airCollider: {fileID: 176610170}
+  maxHealth: 3
+  invulnerabilityTime: 2
+  blinkTime: 0.1
+  knockbackIntensity: {x: 100, y: 250}
+  knockbackTime: 0.5
+  deadTime: 5
 --- !u!212 &176610165
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -211,7 +217,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -7766446191851538065, guid: c111a0c5bb694f9408c44f944db28f16, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -4950,6 +4956,10 @@ PrefabInstance:
     - target: {fileID: 511638308455185348, guid: a2fa87a2eed375c47aeb80145d019803, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 511638308455185349, guid: a2fa87a2eed375c47aeb80145d019803, type: 3}
+      propertyPath: maxHealth
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a2fa87a2eed375c47aeb80145d019803, type: 3}
