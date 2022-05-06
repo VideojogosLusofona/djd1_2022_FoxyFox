@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -162,6 +163,8 @@ public class Player : MonoBehaviour
             spriteRenderer.sortingOrder = 2;
 
             deadTimer = deadTime;
+
+            SceneManager.LoadScene("MainMenu");
         }
         else
         {
@@ -194,4 +197,10 @@ public class Player : MonoBehaviour
 
         inputLockTimer = knockbackDuration;
     }
+
+    public int GetHealth()
+    {
+        return health;
+    }
+
 }

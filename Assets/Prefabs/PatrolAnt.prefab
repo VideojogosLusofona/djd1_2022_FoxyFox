@@ -283,3 +283,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 320
   deathAngle: 20
+  damage: 1
+  maxHealth: 1
+  deathEffectPrefab: {fileID: 7972717785201097833, guid: 6937010ef0f73934f87fda1c1cedfdbd, type: 3}
+  scoreValue: {fileID: 11400000, guid: 373e3cdb06220c847b6026eea0ea13ab, type: 2}

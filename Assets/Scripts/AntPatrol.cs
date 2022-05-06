@@ -12,6 +12,8 @@ public class AntPatrol : MonoBehaviour
     [SerializeField] private float      deathAngle = 20;
     [SerializeField] private int        damage = 1;
     [SerializeField] private int        maxHealth = 1;
+    [SerializeField] private GameObject deathEffectPrefab;
+    [SerializeField] private IntValue   scoreValue;
 
     private Rigidbody2D rb;
     private float       dirX = 1;
@@ -103,6 +105,13 @@ public class AntPatrol : MonoBehaviour
         if (health <= 0)
         {
             Destroy(gameObject);
+
+            scoreValue.ChangeValue(10);
+
+            if (deathEffectPrefab != null)
+            {
+                Instantiate(deathEffectPrefab, transform.position, transform.rotation);
+            }
         }
         else
         {
