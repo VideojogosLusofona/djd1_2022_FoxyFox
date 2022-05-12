@@ -5,19 +5,24 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private float      horizontalSpeed = 200.0f;
-    [SerializeField] private float      jumpSpeed = 200.0f;
-    [SerializeField] private Transform  groundProbe;
-    [SerializeField] private float      groundProbeRadius = 5.0f;
-    [SerializeField] private LayerMask  groundMask;
-    [SerializeField] private float      maxJumpTime = 0.1f;
-    [SerializeField] private float      fallGravityScale = 5.0f;
-    [SerializeField] private int        maxHealth = 3;
-    [SerializeField] private float      invulnerabilityTime = 2.0f;
-    [SerializeField] private float      blinkTime = 0.1f;
-    [SerializeField] private float      knockbackIntensity = 100.0f;
-    [SerializeField] private float      knockbackDuration = 0.5f;
-    [SerializeField] private float      deadTime = 3.0f;
+    [SerializeField] private float          horizontalSpeed = 200.0f;
+    [SerializeField] private float          jumpSpeed = 200.0f;
+    [SerializeField] private Transform      groundProbe;
+    [SerializeField] private float          groundProbeRadius = 5.0f;
+    [SerializeField] private LayerMask      groundMask;
+    [SerializeField] private float          maxJumpTime = 0.1f;
+    [SerializeField] private float          fallGravityScale = 5.0f;
+    [SerializeField] private int            maxHealth = 3;
+    [SerializeField] private float          invulnerabilityTime = 2.0f;
+    [SerializeField] private float          blinkTime = 0.1f;
+    [SerializeField] private float          knockbackIntensity = 100.0f;
+    [SerializeField] private float          knockbackDuration = 0.5f;
+    [SerializeField] private float          deadTime = 3.0f;
+    [SerializeField] private TimeUpdater    timeUpdater;
+    [SerializeField] private Projectile     projectilePrefab;
+    [SerializeField] private Transform      shootPoint;
+    [SerializeField] private float          cooldownTime;
+    [SerializeField] private float          projectileDamageMultiplier = 1.0f;
 
     private Rigidbody2D     rb;
     private Animator        anim;
@@ -28,6 +33,7 @@ public class Player : MonoBehaviour
     private float           blinkTimer = 0;
     private float           inputLockTimer = 0;
     private float           deadTimer = 0;
+    private float           cooldownTimer = 0;
 
     private bool isInvulnerable
     {
@@ -66,11 +72,21 @@ public class Player : MonoBehaviour
         if (isInputLocked)
         {
             inputLockTimer -= Time.deltaTime;
+            if (timeUpdater)
+            {
+                timeUpdater.SetScale(1.0f);
+            }
         }
         else
         {
             float hAxis = Input.GetAxis("Horizontal");
             currentVelocity.x = hAxis * horizontalSpeed;
+
+            if (timeUpdater != null)
+            {
+                if (Mathf.Abs(hAxis) > 0) timeUpdater.SetScale(1.0f);
+                else timeUpdater.SetScale(0.0f);
+            }
 
             if (Input.GetButtonDown("Jump"))
             {
@@ -128,6 +144,21 @@ public class Player : MonoBehaviour
             {
                 spriteRenderer.enabled = true;
             }
+        }
+
+        if (cooldownTimer <= 0)
+        {
+            if (Input.GetButtonDown("Fire1"))
+            {
+                Projectile projectile = Instantiate(projectilePrefab, shootPoint.position, shootPoint.rotation);
+                projectile.Damage = Mathf.FloorToInt(projectile.Damage * projectileDamageMultiplier);
+
+                cooldownTimer = cooldownTime;
+            }
+        }
+        else
+        {
+            cooldownTimer -= Time.deltaTime;
         }
     }
 

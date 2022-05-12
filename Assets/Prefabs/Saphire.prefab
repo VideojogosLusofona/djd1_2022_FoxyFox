@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 51131019720823491}
   - component: {fileID: 51131019720823503}
   - component: {fileID: 51131019720823496}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Saphire
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -6,6 +6,7 @@ using TMPro;
 public class UIScore : MonoBehaviour
 {
     [SerializeField] private IntValue   scoreValue;
+    [SerializeField] private string     title = "Score: ";
 
     private TextMeshProUGUI             textObject;
 
@@ -18,6 +19,6 @@ public class UIScore : MonoBehaviour
     {        
         int score = scoreValue.GetValue();
 
-        textObject.text = $"Score: {score}";
+        textObject.text = $"{title} {score}";
     }
 }

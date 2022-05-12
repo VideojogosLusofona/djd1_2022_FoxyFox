@@ -13,7 +13,9 @@ public class AntPatrol : MonoBehaviour
     [SerializeField] private int        damage = 1;
     [SerializeField] private int        maxHealth = 1;
     [SerializeField] private GameObject deathEffectPrefab;
+    [SerializeField] private Transform  deathEffectSpawnPoint;
     [SerializeField] private IntValue   scoreValue;
+    [SerializeField] private FloatValue timeValue;
 
     private Rigidbody2D rb;
     private float       dirX = 1;
@@ -110,7 +112,12 @@ public class AntPatrol : MonoBehaviour
 
             if (deathEffectPrefab != null)
             {
-                Instantiate(deathEffectPrefab, transform.position, transform.rotation);
+                Instantiate(deathEffectPrefab, deathEffectSpawnPoint.position, deathEffectSpawnPoint.rotation);
+            }
+
+            if (timeValue != null)
+            {
+                timeValue.ChangeValue(5.0f);
             }
         }
         else

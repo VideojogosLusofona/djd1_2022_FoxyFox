@@ -7,6 +7,11 @@ public class IntValue : ScriptableObject
 {
     [SerializeField] private int  value;
 
+    public void SetValue(int v)
+    {
+        value = v;
+    }
+
     public void ChangeValue(int deltaValue)
     {
         value += deltaValue;

@@ -5,9 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
+    [SerializeField] private IntValue   scoreValue;
+    [SerializeField] private FloatValue timeValue;
+    [SerializeField] private FloatValue maxTimeValue;
+
     public void Play()
     {
         SceneManager.LoadScene("GameScene");
+        scoreValue.SetValue(0);
+        timeValue.SetValue(maxTimeValue.GetValue());
     }
 
     public void Quit()
