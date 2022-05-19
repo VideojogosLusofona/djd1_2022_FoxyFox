@@ -146,7 +146,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (cooldownTimer <= 0)
+/*        if (cooldownTimer <= 0)
         {
             if (Input.GetButtonDown("Fire1"))
             {
@@ -159,7 +159,7 @@ public class Player : MonoBehaviour
         else
         {
             cooldownTimer -= Time.deltaTime;
-        }
+        }*/
     }
 
     private bool IsOnGround()

@@ -4,22 +4,27 @@ using UnityEngine;
 
 public class AntPatrol : MonoBehaviour
 {
-    [SerializeField] private float      speed = 100;
-    [SerializeField] private Transform  wallProbe;
-    [SerializeField] private Transform  groundProbe;
-    [SerializeField] private float      probeRadius = 5;
-    [SerializeField] private LayerMask  probeMask;
-    [SerializeField] private float      deathAngle = 20;
-    [SerializeField] private int        damage = 1;
-    [SerializeField] private int        maxHealth = 1;
-    [SerializeField] private GameObject deathEffectPrefab;
-    [SerializeField] private Transform  deathEffectSpawnPoint;
-    [SerializeField] private IntValue   scoreValue;
-    [SerializeField] private FloatValue timeValue;
+    [SerializeField] private float          speed = 100;
+    [SerializeField] private Transform      wallProbe;
+    [SerializeField] private Transform      groundProbe;
+    [SerializeField] private float          probeRadius = 5;
+    [SerializeField] private LayerMask      probeMask;
+    [SerializeField] private float          deathAngle = 20;
+    [SerializeField] private int            damage = 1;
+    [SerializeField] private int            maxHealth = 1;
+    [SerializeField] private GameObject     deathEffectPrefab;
+    [SerializeField] private Transform      deathEffectSpawnPoint;
+    [SerializeField] private IntValue       scoreValue;
+    [SerializeField] private FloatValue     timeValue;
+    [SerializeField] private LineRenderer   trappedFX;
 
     private Rigidbody2D rb;
     private float       dirX = 1;
     private int         health;
+
+    private float       freezeTimer = 0.0f;
+    private bool        frozenThisFrame;
+    private float       thawTimer = 0.0f;
 
     void Start()
     {
@@ -31,24 +36,32 @@ public class AntPatrol : MonoBehaviour
     {
         Vector3 currentVelocity = rb.velocity;
 
-        Collider2D collider = Physics2D.OverlapCircle(wallProbe.position, probeRadius, probeMask);
-        if (collider != null)
+        if (thawTimer > 0.0f)
         {
-            currentVelocity = SwitchDirection(currentVelocity);
+            currentVelocity.x = 0;
+
+            thawTimer -= Time.deltaTime;
         }
         else
         {
-            collider = Physics2D.OverlapCircle(groundProbe.position, probeRadius, probeMask);
 
-            if (collider == null)
+            Collider2D collider = Physics2D.OverlapCircle(wallProbe.position, probeRadius, probeMask);
+            if (collider != null)
             {
                 currentVelocity = SwitchDirection(currentVelocity);
             }
+            else
+            {
+                collider = Physics2D.OverlapCircle(groundProbe.position, probeRadius, probeMask);
+
+                if (collider == null)
+                {
+                    currentVelocity = SwitchDirection(currentVelocity);
+                }
+            }
+
+            currentVelocity.x = speed * dirX;
         }
-
-        currentVelocity.x = speed * dirX;
-
-        rb.velocity = currentVelocity;
 
         if ((currentVelocity.x > 0) && (transform.right.x < 0))
         {
@@ -58,6 +71,8 @@ public class AntPatrol : MonoBehaviour
         {
             transform.rotation = Quaternion.Euler(0, 180, 0);
         }
+
+        rb.velocity = currentVelocity;
     }
 
     private Vector3 SwitchDirection(Vector3 currentVelocity)
@@ -139,5 +154,45 @@ public class AntPatrol : MonoBehaviour
             Gizmos.color = new Color(1.0f, 0.0f, 0.0f, 0.5f);
             Gizmos.DrawSphere(groundProbe.position, probeRadius);
         }
+    }
+
+    public void Freeze()
+    {
+        freezeTimer += Time.deltaTime;
+        frozenThisFrame = true;
+
+        if (freezeTimer > 2.0f)
+        {
+            thawTimer = 2.0f;
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (!frozenThisFrame)
+        {
+            freezeTimer = 0;
+        }
+
+        if (trappedFX)
+        {
+            if ((freezeTimer > 0) || (thawTimer > 0))
+            {
+                trappedFX.enabled = true;
+
+                var color = trappedFX.startColor;
+                color.a = Mathf.Clamp01(Mathf.Max(freezeTimer, thawTimer) / 2.0f);
+                trappedFX.startColor = color;
+                color = trappedFX.endColor;
+                color.a = Mathf.Clamp01(Mathf.Max(freezeTimer, thawTimer) / 2.0f);
+                trappedFX.endColor = color;
+            }
+            else
+            {
+                trappedFX.enabled = false;
+            }
+        }
+
+        frozenThisFrame = false;
     }
 }
