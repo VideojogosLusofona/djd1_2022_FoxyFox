@@ -11,7 +11,9 @@ public class UIManager : MonoBehaviour
 
     public void Play()
     {
-        SceneManager.LoadScene("GameScene");
+        SceneMng sceneManager = FindObjectOfType<SceneMng>();
+        sceneManager.StartScene("GameScene");
+
         scoreValue.SetValue(0);
         timeValue.SetValue(maxTimeValue.GetValue());
     }

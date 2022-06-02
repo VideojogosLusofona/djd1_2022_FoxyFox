@@ -23,6 +23,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform      shootPoint;
     [SerializeField] private float          cooldownTime;
     [SerializeField] private float          projectileDamageMultiplier = 1.0f;
+    [SerializeField] private AudioClip      hurtSound;
 
     private Rigidbody2D     rb;
     private Animator        anim;
@@ -146,7 +147,7 @@ public class Player : MonoBehaviour
             }
         }
 
-/*        if (cooldownTimer <= 0)
+        if (cooldownTimer <= 0)
         {
             if (Input.GetButtonDown("Fire1"))
             {
@@ -159,7 +160,7 @@ public class Player : MonoBehaviour
         else
         {
             cooldownTimer -= Time.deltaTime;
-        }*/
+        }
     }
 
     private bool IsOnGround()
@@ -184,7 +185,7 @@ public class Player : MonoBehaviour
 
         health = health - damage;
 
-        Debug.Log($"Ouch, health={health}");
+        SoundManager.Get().Play(hurtSound);
 
         if (health <= 0)
         {

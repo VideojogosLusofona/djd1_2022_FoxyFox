@@ -24,15 +24,15 @@ public class AntPatrol : MonoBehaviour
 
     private float       freezeTimer = 0.0f;
     private bool        frozenThisFrame;
-    private float       thawTimer = 0.0f;
+    protected float       thawTimer = 0.0f;
 
-    void Start()
+    virtual protected void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         health = maxHealth;
     }
 
-    void Update()
+    virtual protected void Update()
     {
         Vector3 currentVelocity = rb.velocity;
 
